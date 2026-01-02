@@ -30,14 +30,16 @@ RUN ARCH_NAME=$(dpkg --print-architecture) \
     && rm -rf /var/lib/apt/lists/*
 
 # kubectlをインストール
-RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
+RUN ARCH_NAME=$(dpkg --print-architecture) \
+    && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${ARCH_NAME}/kubectl" \
     && chmod +x kubectl \
     && mv kubectl /usr/local/bin/
 
 # minikubeをインストール
-RUN curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
-    && install minikube-linux-amd64 /usr/local/bin/minikube \
-    && rm minikube-linux-amd64
+RUN ARCH_NAME=$(dpkg --print-architecture) \
+    && curl -LO "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${ARCH_NAME}" \
+    && install "minikube-linux-${ARCH_NAME}" /usr/local/bin/minikube \
+    && rm "minikube-linux-${ARCH_NAME}"
 
 # Helmをインストール
 RUN curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
