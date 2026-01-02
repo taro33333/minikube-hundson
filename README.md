@@ -19,6 +19,7 @@
 ```bash
 # このディレクトリで実行
 docker compose up -d --build
+または ./start.sh
 
 # コンテナに入る
 docker compose exec handson bash
