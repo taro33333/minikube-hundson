@@ -31,7 +31,10 @@ docker compose exec handson bash
 
 ```bash
 # minikubeを起動（初回は少し時間がかかります）
-minikube start --driver=docker
+minikube start --driver=docker \
+  --cpus=4 \
+  --memory=4g \
+  --kubernetes-version=v1.30.0
 
 # クラスタの確認
 kubectl get nodes
