@@ -3,6 +3,7 @@
 「リスクから学ぶ Kubernetesコンテナセキュリティ」のハンズオン用Docker環境です。
 
 ローカル環境を汚さずにminikubeを使ったKubernetesハンズオンができます。
+(本書ではGoogleCloudのComputeEngine内でハンズオンを実施)
 
 ## 📋 必要条件
 
