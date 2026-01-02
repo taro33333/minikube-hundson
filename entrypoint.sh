@@ -1,39 +1,31 @@
 #!/bin/bash
 
+# ボリュームの権限を修正
+sudo chown -R handson:handson /home/handson/.minikube 2>/dev/null || true
+sudo chown -R handson:handson /home/handson/.kube 2>/dev/null || true
+sudo chown -R handson:handson /home/handson/workspace/my-work 2>/dev/null || true
+
 echo "======================================"
 echo " Kubernetes Container Security Handson"
 echo "======================================"
 echo ""
 
-# Docker ソケットの確認
+# Dockerソケットの権限を修正
 if [ -S /var/run/docker.sock ]; then
     echo "✅ Docker socket detected"
-    
-    # Docker グループが存在するか確認
-    if getent group docker > /dev/null 2>&1; then
-        # ユーザーをdockerグループに追加（すでに追加されていても問題ない）
-        sudo usermod -aG docker handson 2>/dev/null || true
-    fi
+    sudo chmod 666 /var/run/docker.sock 2>/dev/null || true
 else
-    echo "⚠️  Docker socket not found at /var/run/docker.sock"
-    echo "   Please run with: -v /var/run/docker.sock:/var/run/docker.sock"
+    echo "⚠️  Docker socket not found"
+    echo "   Run with: -v /var/run/docker.sock:/var/run/docker.sock"
 fi
 
 echo ""
 echo "📚 Book repository: /home/handson/workspace/book"
 echo ""
 echo "🚀 Quick Start:"
-echo "   1. Start minikube:"
-echo "      minikube start --driver=docker"
-echo ""
-echo "   2. Verify cluster:"
-echo "      kubectl get nodes"
-echo ""
-echo "   3. Go to book samples:"
-echo "      cd /home/handson/workspace/book"
+echo "   minikube start --driver=docker --cpus=4 --memory=4g --kubernetes-version=v1.30.0"
 echo ""
 echo "======================================"
 echo ""
 
-# コマンド実行
 exec "$@"
