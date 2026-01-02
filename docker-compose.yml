@@ -1,0 +1,38 @@
+services:
+  handson:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: k8s-security-handson:latest
+    container_name: k8s-security-handson
+    
+    # Docker in Docker のために必要
+    privileged: true
+    
+    # ホストのDockerソケットをマウント（DinDではなくDooDを使用）
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # 作業用の永続化ボリューム（必要に応じて）
+      - handson-data:/home/handson/workspace/my-work
+      # minikubeのデータを永続化
+      - minikube-data:/home/handson/.minikube
+      - kube-config:/home/handson/.kube
+    
+    # 対話モード
+    stdin_open: true
+    tty: true
+    
+    # ネットワーク設定
+    network_mode: "host"
+    
+    # リソース制限（必要に応じて調整）
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '4'
+    #       memory: 8G
+
+volumes:
+  handson-data:
+  minikube-data:
+  kube-config:
